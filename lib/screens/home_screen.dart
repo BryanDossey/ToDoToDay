@@ -29,7 +29,71 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
   ];
 
+void showTaskActions(Task task) {
 
+  showModalBottomSheet(
+    context: context,
+
+    builder: (context) {
+
+      return SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+
+          children: [
+
+            ListTile(
+              leading: const Icon(Icons.check_circle),
+              title: const Text("To Done!"),
+
+              onTap: () {
+
+                setState(() {
+                  task.status = TaskStatus.done;
+                });
+
+                Navigator.pop(context);
+              },
+            ),
+
+
+            ListTile(
+              leading: const Icon(Icons.arrow_forward),
+              title: const Text("To-Morrow"),
+
+              onTap: () {
+
+                setState(() {
+                  task.status = TaskStatus.tomorrow;
+                });
+
+                Navigator.pop(context);
+              },
+            ),
+
+
+            ListTile(
+              leading: const Icon(Icons.delete),
+              title: const Text("To Trash"),
+
+              onTap: () {
+
+                setState(() {
+                  task.status = TaskStatus.trash;
+                });
+
+                Navigator.pop(context);
+              },
+            ),
+
+          ],
+        ),
+      );
+
+    },
+  );
+
+}
   @override
   Widget build(BuildContext context) {
 
@@ -50,8 +114,12 @@ class _HomeScreenState extends State<HomeScreen> {
           final task = todayTasks[index];
 
           return ListTile(
-            title: Text(task.title),
-          );
+  title: Text(task.title),
+
+  onTap: () {
+    showTaskActions(task);
+  },
+);
 
         },
       ),
