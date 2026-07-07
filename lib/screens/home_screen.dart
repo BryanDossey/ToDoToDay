@@ -11,6 +11,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+DateTime selectedDate = DateTime.now();
+
   final List<Task> tasks = [
     Task(
       id: "1",

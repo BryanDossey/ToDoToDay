@@ -1,6 +1,5 @@
 enum TaskStatus {
-  today,
-  tomorrow,
+  active,
   done,
   trash,
 }
@@ -8,15 +7,18 @@ enum TaskStatus {
 class Task {
   final String id;
   String title;
-  TaskStatus status;
+
   DateTime date;
-  DateTime createdAt;
+
+  TaskStatus status;
+
+  final DateTime createdAt;
 
   Task({
     required this.id,
     required this.title,
-    required this.status,
     required this.date,
+    required this.status,
     required this.createdAt,
   });
 }
