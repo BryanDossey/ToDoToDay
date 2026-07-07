@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../models/task.dart';
+import '../services/task_service.dart';
 import '../widgets/task_card.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final TaskService taskService;
+
+  const HomeScreen({
+    super.key,
+    required this.taskService,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -13,30 +19,54 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   DateTime selectedDate = DateTime.now();
+  final Set<String> completingTaskIds = {};
+  List<Task> tasks = [];
 
-  final List<Task> tasks = [
-    Task(
-      id: "1",
-      title: "Buy groceries",
-      date: DateTime.now(),
-      status: TaskStatus.active,
-      createdAt: DateTime.now(),
-    ),
-    Task(
-      id: "2",
-      title: "Call dentist",
-      date: DateTime.now(),
-      status: TaskStatus.active,
-      createdAt: DateTime.now(),
-    ),
-    Task(
-      id: "3",
-      title: "Pay electric bill",
-      date: DateTime.now().add(const Duration(days: 1)),
-      status: TaskStatus.active,
-      createdAt: DateTime.now(),
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    loadTasks();
+  }
+
+  void loadTasks() {
+    final savedTasks = widget.taskService.loadTasks();
+
+    setState(() {
+      if (savedTasks.isEmpty) {
+        tasks = [
+          Task(
+            id: "1",
+            title: "Buy groceries",
+            date: DateTime.now(),
+            status: TaskStatus.active,
+            createdAt: DateTime.now(),
+          ),
+          Task(
+            id: "2",
+            title: "Call dentist",
+            date: DateTime.now(),
+            status: TaskStatus.active,
+            createdAt: DateTime.now(),
+          ),
+          Task(
+            id: "3",
+            title: "Pay electric bill",
+            date: DateTime.now().add(const Duration(days: 1)),
+            status: TaskStatus.active,
+            createdAt: DateTime.now(),
+          ),
+        ];
+
+        saveTasks();
+      } else {
+        tasks = savedTasks;
+      }
+    });
+  }
+
+  void saveTasks() {
+    widget.taskService.saveTasks(tasks);
+  }
 
   bool isSameDay(DateTime a, DateTime b) {
     return a.year == b.year && a.month == b.month && a.day == b.day;
@@ -58,6 +88,12 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void goToToday() {
+    setState(() {
+      selectedDate = DateTime.now();
+    });
+  }
+
   void addTask(String title) {
     if (title.trim().isEmpty) return;
 
@@ -72,6 +108,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
     });
+
+    saveTasks();
   }
 
   void showAddTaskDialog() {
@@ -126,10 +164,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 leading: const Icon(Icons.check_circle),
                 title: const Text("To Done!"),
                 onTap: () {
-                  setState(() {
-                    task.status = TaskStatus.done;
-                  });
                   Navigator.pop(context);
+
+                  setState(() {
+                    completingTaskIds.add(task.id);
+                  });
+
+                  Future.delayed(const Duration(milliseconds: 450), () {
+                    if (!mounted) return;
+
+                    setState(() {
+                      task.status = TaskStatus.done;
+                      completingTaskIds.remove(task.id);
+                    });
+
+                    saveTasks();
+                  });
                 },
               ),
               ListTile(
@@ -139,6 +189,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   setState(() {
                     task.date = task.date.add(const Duration(days: 1));
                   });
+
+                  saveTasks();
                   Navigator.pop(context);
                 },
               ),
@@ -149,6 +201,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   setState(() {
                     task.status = TaskStatus.trash;
                   });
+
+                  saveTasks();
                   Navigator.pop(context);
                 },
               ),
@@ -205,11 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     icon: const Icon(Icons.chevron_left),
                   ),
                   TextButton(
-                    onPressed: () {
-                      setState(() {
-                        selectedDate = DateTime.now();
-                      });
-                    },
+                    onPressed: goToToday,
                     child: const Text("Today"),
                   ),
                   IconButton(
@@ -220,9 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-
           const SizedBox(height: 20),
-
           const Text(
             "Today's Focus",
             style: TextStyle(
@@ -230,22 +278,19 @@ class _HomeScreenState extends State<HomeScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
-
           const SizedBox(height: 10),
-
           if (activeTasks.isEmpty)
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 20),
               child: Text("Nothing scheduled. Enjoy your day."),
             ),
-
           for (final task in activeTasks)
             TaskCard(
               title: task.title,
               icon: Icons.circle_outlined,
+              isCompleting: completingTaskIds.contains(task.id),
               onTap: () => showTaskActions(task),
             ),
-
           if (completedTasks.isNotEmpty) ...[
             const SizedBox(height: 24),
             const Text(
