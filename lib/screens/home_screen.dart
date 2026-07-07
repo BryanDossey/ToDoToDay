@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import '../models/task.dart';
 import 'package:intl/intl.dart';
+
+import '../models/task.dart';
+import '../widgets/task_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -40,13 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return a.year == b.year && a.month == b.month && a.day == b.day;
   }
 
-  String dayName(DateTime date) {
-  return DateFormat('EEEE').format(date);
-}
+  String dayName(DateTime date) => DateFormat('EEEE').format(date);
 
-String fullDate(DateTime date) {
-  return DateFormat('MMMM d, yyyy').format(date);
-}
+  String fullDate(DateTime date) => DateFormat('MMMM d, yyyy').format(date);
 
   void goToPreviousDay() {
     setState(() {
@@ -182,52 +180,90 @@ String fullDate(DateTime date) {
         padding: const EdgeInsets.all(16),
         children: [
           Column(
-  children: [
-    Text(
-      dayName(selectedDate),
-      style: const TextStyle(
-        fontSize: 28,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
+            children: [
+              Text(
+                dayName(selectedDate),
+                style: const TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                fullDate(selectedDate),
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.grey.shade600,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: goToPreviousDay,
+                    icon: const Icon(Icons.chevron_left),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        selectedDate = DateTime.now();
+                      });
+                    },
+                    child: const Text("Today"),
+                  ),
+                  IconButton(
+                    onPressed: goToNextDay,
+                    icon: const Icon(Icons.chevron_right),
+                  ),
+                ],
+              ),
+            ],
+          ),
 
-    const SizedBox(height: 4),
+          const SizedBox(height: 20),
 
-    Text(
-      fullDate(selectedDate),
-      style: TextStyle(
-        fontSize: 18,
-        color: Colors.grey.shade600,
-      ),
-    ),
+          const Text(
+            "Today's Focus",
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
 
-    const SizedBox(height: 12),
+          const SizedBox(height: 10),
 
-    Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          onPressed: goToPreviousDay,
-          icon: const Icon(Icons.chevron_left),
-        ),
+          if (activeTasks.isEmpty)
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Text("Nothing scheduled. Enjoy your day."),
+            ),
 
-        TextButton(
-          onPressed: () {
-            setState(() {
-              selectedDate = DateTime.now();
-            });
-          },
-          child: const Text("Today"),
-        ),
+          for (final task in activeTasks)
+            TaskCard(
+              title: task.title,
+              icon: Icons.circle_outlined,
+              onTap: () => showTaskActions(task),
+            ),
 
-        IconButton(
-          onPressed: goToNextDay,
-          icon: const Icon(Icons.chevron_right),
-        ),
-      ],
-    ),
-  ],
-),
+          if (completedTasks.isNotEmpty) ...[
+            const SizedBox(height: 24),
+            const Text(
+              "Done Today",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            for (final task in completedTasks)
+              TaskCard(
+                title: task.title,
+                icon: Icons.check_circle,
+                isCompleted: true,
+                onTap: () => showTaskActions(task),
+              ),
+          ],
         ],
       ),
       floatingActionButton: FloatingActionButton(
