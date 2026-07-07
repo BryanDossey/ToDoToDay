@@ -144,7 +144,84 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
+Future<void> showToSoonOptions(Task task) async {
+  Navigator.pop(context);
 
+  await showModalBottomSheet(
+    context: context,
+    builder: (context) {
+      return SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              title: Text(
+                "To Soon...",
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.arrow_forward),
+              title: const Text("Tomorrow"),
+              onTap: () {
+                setState(() {
+                  task.date = selectedDate.add(const Duration(days: 1));
+                });
+                saveTasks();
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.calendar_view_week),
+              title: const Text("Later This Week"),
+              onTap: () {
+                setState(() {
+                  task.date = selectedDate.add(const Duration(days: 3));
+                });
+                saveTasks();
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.next_week),
+              title: const Text("Next Week"),
+              onTap: () {
+                setState(() {
+                  task.date = selectedDate.add(const Duration(days: 7));
+                });
+                saveTasks();
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.calendar_month),
+              title: const Text("Pick a Date..."),
+              onTap: () async {
+                Navigator.pop(context);
+
+                final pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: task.date,
+                  firstDate: DateTime(2020),
+                  lastDate: DateTime(2100),
+                );
+
+                if (pickedDate == null) return;
+
+                setState(() {
+                  task.date = pickedDate;
+                });
+
+                saveTasks();
+              },
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
   void showTaskActions(Task task) {
     showModalBottomSheet(
       context: context,
@@ -192,6 +269,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   saveTasks();
                   Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.calendar_month),
+                title: const Text("To Soon..."),
+                onTap: () {
+                  showToSoonOptions(task);
                 },
               ),
               ListTile(
