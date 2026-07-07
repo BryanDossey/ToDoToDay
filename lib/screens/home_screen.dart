@@ -97,8 +97,17 @@ void showTaskActions(Task task) {
   @override
   Widget build(BuildContext context) {
 
-    final todayTasks =
-        tasks.where((task) => task.status == TaskStatus.today).toList();
+    final todayTasks = tasks
+    .where((task) => task.status == TaskStatus.today)
+    .toList();
+
+final tomorrowTasks = tasks
+    .where((task) => task.status == TaskStatus.tomorrow)
+    .toList();
+
+final completedTasks = tasks
+    .where((task) => task.status == TaskStatus.done)
+    .toList();
 
 
     return Scaffold(
@@ -106,23 +115,87 @@ void showTaskActions(Task task) {
         title: const Text("ToDo ToDay"),
       ),
 
-      body: ListView.builder(
-        itemCount: todayTasks.length,
+       body: ListView(
+  padding: const EdgeInsets.all(16),
 
-        itemBuilder: (context, index) {
+  children: [
 
-          final task = todayTasks[index];
+    const Text(
+      "Today",
+      style: TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
 
-          return ListTile(
-  title: Text(task.title),
+    for (final task in todayTasks)
 
-  onTap: () {
-    showTaskActions(task);
-  },
-);
+      ListTile(
+        leading: const Icon(Icons.circle_outlined),
+        title: Text(task.title),
 
+        onTap: () {
+          showTaskActions(task);
         },
       ),
+
+
+    const SizedBox(height: 25),
+
+
+    const Text(
+      "Tomorrow",
+      style: TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+
+
+    for (final task in tomorrowTasks)
+
+      ListTile(
+        leading: const Icon(Icons.arrow_forward),
+        title: Text(task.title),
+
+        onTap: () {
+          showTaskActions(task);
+        },
+      ),
+
+
+
+    const SizedBox(height: 25),
+
+
+    const Text(
+      "Completed",
+      style: TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+
+
+    for (final task in completedTasks)
+
+      ListTile(
+        leading: const Icon(Icons.check_circle),
+        title: Text(
+          task.title,
+
+          style: const TextStyle(
+            decoration: TextDecoration.lineThrough,
+          ),
+        ),
+
+        onTap: () {
+          showTaskActions(task);
+        },
+      ),
+
+  ],
+),
     );
   }
 }
