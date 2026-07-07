@@ -5,6 +5,12 @@ import '../models/task.dart';
 import '../services/task_service.dart';
 import '../widgets/task_card.dart';
 
+enum CalendarView {
+  day,
+  week,
+  month,
+}
+
 class HomeScreen extends StatefulWidget {
   final TaskService taskService;
 
@@ -19,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   DateTime selectedDate = DateTime.now();
+  CalendarView currentView = CalendarView.day;
   final Set<String> completingTaskIds = {};
   List<Task> tasks = [];
 
@@ -297,27 +304,21 @@ Future<void> showToSoonOptions(Task task) async {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final activeTasks = tasks.where((task) {
-      return task.status == TaskStatus.active &&
-          isSameDay(task.date, selectedDate);
-    }).toList();
+ Widget buildDayView() {
+  final activeTasks = tasks.where((task) {
+    return task.status == TaskStatus.active &&
+        isSameDay(task.date, selectedDate);
+  }).toList();
 
-    final completedTasks = tasks.where((task) {
-      return task.status == TaskStatus.done &&
-          isSameDay(task.date, selectedDate);
-    }).toList();
+  final completedTasks = tasks.where((task) {
+    return task.status == TaskStatus.done &&
+        isSameDay(task.date, selectedDate);
+  }).toList();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("ToDo ToDay"),
-        centerTitle: true,
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          Column(
+  return ListView(
+    padding: const EdgeInsets.all(16),
+    children: [
+    Column(
             children: [
               Text(
                 dayName(selectedDate),
@@ -342,10 +343,35 @@ Future<void> showToSoonOptions(Task task) async {
                     onPressed: goToPreviousDay,
                     icon: const Icon(Icons.chevron_left),
                   ),
-                  TextButton(
-                    onPressed: goToToday,
-                    child: const Text("Today"),
-                  ),
+                  PopupMenuButton<CalendarView>(
+                    initialValue: currentView,
+                    onSelected: (view) {
+                      setState(() {
+                        currentView = view;
+                      });
+                    },
+                    child: Text(
+                      currentView == CalendarView.day
+                      ? "Day View"
+                      : currentView == CalendarView.week
+                        ? "Week View"
+                        : "Month View"
+                    ),
+                    itemBuilder: (context) => const [
+                      PopupMenuItem(
+                        value: CalendarView.day,
+                        child: Text("Day View"),
+                      ),
+                      PopupMenuItem(
+                        value: CalendarView.week,
+                        child: Text("Week View"),
+                      ),
+                      PopupMenuItem(
+                        value: CalendarView.month,
+                        child: Text("Month View"),
+),
+                  ],
+                ),
                   IconButton(
                     onPressed: goToNextDay,
                     icon: const Icon(Icons.chevron_right),
@@ -392,9 +418,95 @@ Future<void> showToSoonOptions(Task task) async {
                 isCompleted: true,
                 onTap: () => showTaskActions(task),
               ),
-          ],
-        ],
+            ],
+        ]
+        );
+    } 
+  Widget buildWeekView() {
+  final startOfWeek =
+      selectedDate.subtract(Duration(days: selectedDate.weekday - 1));
+
+  final weekDays = List.generate(
+    7,
+    (index) => startOfWeek.add(Duration(days: index)),
+  );
+  return ListView.builder(
+    padding: const EdgeInsets.all(16),
+    itemCount: weekDays.length,
+    itemBuilder: (context, index) {
+      final day = weekDays[index];
+
+      final taskCount = tasks.where((task) {
+        return task.status == TaskStatus.active &&
+            isSameDay(task.date, day);
+      }).length;
+
+      return Card(
+        child: ListTile(
+          title: Text(
+            DateFormat('EEEE').format(day),
+          ),
+          subtitle: Text(
+            DateFormat('MMMM d').format(day),
+          ),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(
+              taskCount,
+              (_) => const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 1),
+                child: Icon(
+                  Icons.circle,
+                  size: 8,
+                ),
+              ),
+            ),
+          ),
+          onTap: () {
+            setState(() {
+              selectedDate = day;
+              currentView = CalendarView.day;
+            });
+          },
+        ),
+      );
+    },
+  );
+}
+Widget buildMonthView() {
+  return const Center(
+    child: Text(
+      "Month View Coming Soon",
+      style: TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
       ),
+    ),
+  );
+}
+  @override
+  Widget build(BuildContext context) {
+    final activeTasks = tasks.where((task) {
+      return task.status == TaskStatus.active &&
+          isSameDay(task.date, selectedDate);
+    }).toList();
+
+    final completedTasks = tasks.where((task) {
+      return task.status == TaskStatus.done &&
+          isSameDay(task.date, selectedDate);
+    }).toList();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("ToDo ToDay"),
+        centerTitle: true,
+      ),
+      body: currentView == CalendarView.day
+    ? buildDayView()
+    : currentView == CalendarView.week
+        ? buildWeekView()
+        : buildMonthView(),
+          
       floatingActionButton: FloatingActionButton(
         onPressed: showAddTaskDialog,
         child: const Icon(Icons.add),
