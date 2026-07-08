@@ -258,11 +258,17 @@ Future<void> showToSoonOptions(Task task) async {
 
                 if (pickedDate == null) return;
 
-                setState(() {
-                  task.date = pickedDate;
-                });
+lastChangedTask = task;
+previousStatus = task.status;
+previousDate = task.date;
 
-                saveTasks();
+setState(() {
+  task.date = pickedDate;
+});
+
+saveTasks();
+
+showUndoSnackBar("${task.title} rescheduled");
               },
             ),
           ],
