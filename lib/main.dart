@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'screens/home_screen.dart';
 import 'services/task_service.dart';
+import 'theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +26,7 @@ class ToDoToDayApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "ToDo ToDay",
-      theme: ThemeData(useMaterial3: true),
+      theme: AppTheme.lightTheme,
       home: HomeScreen(taskService: taskService),
     );
   }

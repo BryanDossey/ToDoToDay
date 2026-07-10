@@ -3,7 +3,7 @@ enum TaskStatus {
   done,
   trash,
 }
-
+ 
 class Task {
   final String id;
   String title;
@@ -11,13 +11,16 @@ class Task {
   TaskStatus status;
   final DateTime createdAt;
 
+int sortOrder;
+
   Task({
-    required this.id,
-    required this.title,
-    required this.date,
-    required this.status,
-    required this.createdAt,
-  });
+  required this.id,
+  required this.title,
+  required this.date,
+  required this.status,
+  required this.createdAt,
+  required this.sortOrder,
+});
 
   Map<String, dynamic> toMap() {
     return {
@@ -26,6 +29,7 @@ class Task {
       'date': date.toIso8601String(),
       'status': status.name,
       'createdAt': createdAt.toIso8601String(),
+      'sortOrder': sortOrder,
     };
   }
 
@@ -37,6 +41,7 @@ class Task {
       status: TaskStatus.values.firstWhere(
         (status) => status.name == map['status'],
       ),
+      sortOrder: map['sortOrder'] ?? 0,
       createdAt: DateTime.parse(map['createdAt']),
     );
   }

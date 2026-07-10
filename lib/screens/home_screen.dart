@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../models/task.dart';
 import '../services/task_service.dart';
 import '../widgets/task_card.dart';
+import 'package:flutter/services.dart';
 
 enum CalendarView {
   day,
@@ -51,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
             date: DateTime.now(),
             status: TaskStatus.active,
             createdAt: DateTime.now(),
+            sortOrder: 0,
           ),
           Task(
             id: "2",
@@ -58,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
             date: DateTime.now(),
             status: TaskStatus.active,
             createdAt: DateTime.now(),
+            sortOrder: 1,
           ),
           Task(
             id: "3",
@@ -65,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
             date: DateTime.now().add(const Duration(days: 1)),
             status: TaskStatus.active,
             createdAt: DateTime.now(),
+            sortOrder: 2,
           ),
         ];
 
@@ -82,25 +86,34 @@ class _HomeScreenState extends State<HomeScreen> {
 void showUndoSnackBar(String message) {
   ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(message),
-      action: SnackBarAction(
-        label: "UNDO",
-        onPressed: () {
-          if (lastChangedTask == null) return;
+  final snackBar = SnackBar(
+    content: Text(message),
+    duration: const Duration(seconds: 5),
+    action: SnackBarAction(
+      label: "UNDO",
+      onPressed: () {
+        HapticFeedback.selectionClick();
 
-          setState(() {
-            lastChangedTask!.status = previousStatus!;
-            lastChangedTask!.date = previousDate!;
-          });
+        if (lastChangedTask == null) return;
 
-          saveTasks();
-        },
-      ),
-      duration: const Duration(seconds: 5),
+        setState(() {
+          lastChangedTask!.status = previousStatus!;
+          lastChangedTask!.date = previousDate!;
+        });
+
+        saveTasks();
+
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      },
     ),
   );
+
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+  Future.delayed(const Duration(seconds: 5), () {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  });
 }
 
   bool isSameDay(DateTime a, DateTime b) {
@@ -124,10 +137,13 @@ void showUndoSnackBar(String message) {
   }
 
   void goToToday() {
-    setState(() {
-      selectedDate = DateTime.now();
-    });
-  }
+  HapticFeedback.selectionClick();
+
+  setState(() {
+    selectedDate = DateTime.now();
+    currentView = CalendarView.day;
+  });
+}
 
   void addTask(String title) {
     if (title.trim().isEmpty) return;
@@ -135,12 +151,19 @@ void showUndoSnackBar(String message) {
     setState(() {
       tasks.add(
         Task(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
-          title: title.trim(),
-          date: selectedDate,
-          status: TaskStatus.active,
-          createdAt: DateTime.now(),
-        ),
+  id: DateTime.now().millisecondsSinceEpoch.toString(),
+  title: title.trim(),
+  date: selectedDate,
+  status: TaskStatus.active,
+  createdAt: DateTime.now(),
+  sortOrder: tasks
+      .where(
+        (task) =>
+            task.status == TaskStatus.active &&
+            isSameDay(task.date, selectedDate),
+      )
+      .length,
+),
       );
     });
 
@@ -197,16 +220,25 @@ Future<void> showToSoonOptions(Task task) async {
             ),
             const Divider(),
             ListTile(
-              leading: const Icon(Icons.arrow_forward),
-              title: const Text("Tomorrow"),
-              onTap: () {
-                setState(() {
-                  task.date = selectedDate.add(const Duration(days: 1));
-                });
-                saveTasks();
-                Navigator.pop(context);
-              },
-            ),
+  leading: const Icon(Icons.arrow_forward),
+  title: const Text("Tomorrow"),
+  onTap: () {
+    HapticFeedback.lightImpact();
+
+    lastChangedTask = task;
+    previousStatus = task.status;
+    previousDate = task.date;
+
+    setState(() {
+      task.date = selectedDate.add(const Duration(days: 1));
+    });
+
+    saveTasks();
+    Navigator.pop(context);
+
+    showUndoSnackBar("${task.title} rescheduled");
+  },
+),
             ListTile(
               leading: const Icon(Icons.calendar_view_week),
               title: const Text("Later This Week"),
@@ -248,7 +280,7 @@ Future<void> showToSoonOptions(Task task) async {
               title: const Text("Pick a Date..."),
               onTap: () async {
                 Navigator.pop(context);
-
+                HapticFeedback.selectionClick();
                 final pickedDate = await showDatePicker(
                   context: context,
                   initialDate: task.date,
@@ -301,6 +333,7 @@ showUndoSnackBar("${task.title} rescheduled");
                   previousDate = task.date;
 
                   setState(() {
+                    HapticFeedback.mediumImpact();
                   task.status = TaskStatus.done;
               });
 
@@ -315,31 +348,31 @@ showUndoSnackBar("${task.title} rescheduled");
 },
               ),
               ListTile(
-                leading: const Icon(Icons.arrow_forward),
-                title: const Text("To-Morrow"),
-                onTap: () {
-                  lastChangedTask = task;
-previousStatus = task.status;
-previousDate = task.date;
+  leading: const Icon(Icons.arrow_forward),
+  title: const Text("To-Morrow"),
+  onTap: () {
+    HapticFeedback.lightImpact();
 
-setState(() {
-  task.date = task.date.add(const Duration(days: 1));
-});
+    lastChangedTask = task;
+    previousStatus = task.status;
+    previousDate = task.date;
 
-saveTasks();
+    setState(() {
+      task.date = task.date.add(const Duration(days: 1));
+    });
 
-showUndoSnackBar(
-  "${task.title} moved to Tomorrow",
-);
+    saveTasks();
+    Navigator.pop(context);
 
-Navigator.pop(context);
-                },
-              ),
+    showUndoSnackBar("${task.title} moved to Tomorrow");
+  },
+),
               ListTile(
                 leading: const Icon(Icons.calendar_month),
                 title: const Text("To Soon..."),
                 onTap: () {
                   showToSoonOptions(task);
+                  HapticFeedback.lightImpact();
                 },
               ),
               ListTile(
@@ -351,6 +384,7 @@ Navigator.pop(context);
                   previousDate = task.date;
 
                 setState(() {
+                  HapticFeedback.heavyImpact();
                   task.status = TaskStatus.trash;
               });
 
@@ -370,236 +404,375 @@ Navigator.pop(context);
       },
     );
   }
+Widget buildViewSelector() {
+  const inkBlue = Color(0xFF4A6FA5);
+  const inkColor = Color(0xFF454B54);
+
+  return Padding(
+    padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+    child: SizedBox(
+      width: double.infinity,
+      child: SegmentedButton<CalendarView>(
+        showSelectedIcon: false,
+        segments: const [
+          ButtonSegment<CalendarView>(
+            value: CalendarView.day,
+            label: Text("Day"),
+          ),
+          ButtonSegment<CalendarView>(
+            value: CalendarView.week,
+            label: Text("Week"),
+          ),
+          ButtonSegment<CalendarView>(
+            value: CalendarView.month,
+            label: Text("Month"),
+          ),
+          ButtonSegment<CalendarView>(
+            value: CalendarView.year,
+            label: Text("Year"),
+          ),
+        ],
+        selected: {currentView},
+        onSelectionChanged: (selection) {
+          HapticFeedback.selectionClick();
+
+          setState(() {
+            currentView = selection.first;
+          });
+        },
+        style: ButtonStyle(
+          visualDensity: VisualDensity.compact,
+          padding: WidgetStateProperty.all(
+            const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+          ),
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            return states.contains(WidgetState.selected)
+                ? inkBlue
+                : Colors.white;
+          }),
+          foregroundColor: WidgetStateProperty.resolveWith((states) {
+            return states.contains(WidgetState.selected)
+                ? Colors.white
+                : inkColor;
+          }),
+          textStyle: WidgetStateProperty.all(
+            const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          side: WidgetStateProperty.all(
+            BorderSide(
+              color: inkBlue.withOpacity(0.45),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
 
  Widget buildDayView() {
   final activeTasks = tasks.where((task) {
-    return task.status == TaskStatus.active &&
-        isSameDay(task.date, selectedDate);
-  }).toList();
+  return task.status == TaskStatus.active &&
+      isSameDay(task.date, selectedDate);
+}).toList()
+  ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
 
   final completedTasks = tasks.where((task) {
     return task.status == TaskStatus.done &&
         isSameDay(task.date, selectedDate);
   }).toList();
 
+ void reorderActiveTasks(int oldIndex, int newIndex) {
+  if (newIndex > oldIndex) {
+    newIndex -= 1;
+  }
+
+  setState(() {
+    final movedTask = activeTasks.removeAt(oldIndex);
+    activeTasks.insert(newIndex, movedTask);
+
+    for (var index = 0; index < activeTasks.length; index++) {
+      activeTasks[index].sortOrder = index;
+    }
+  });
+
+  HapticFeedback.selectionClick();
+  saveTasks();
+}
+
+    final reorderedActiveTasks = List<Task>.from(activeTasks);
+    final movedTask = reorderedActiveTasks.removeAt(oldIndex);
+    reorderedActiveTasks.insert(newIndex, movedTask);
+
+    var activeTaskIndex = 0;
+
+    setState(() {
+      tasks = tasks.map((task) {
+        final belongsToSelectedDay =
+            task.status == TaskStatus.active &&
+            isSameDay(task.date, selectedDate);
+
+        if (belongsToSelectedDay) {
+          final reorderedTask = reorderedActiveTasks[activeTaskIndex];
+          activeTaskIndex += 1;
+          return reorderedTask;
+        }
+
+        return task;
+      }).toList();
+    });
+
+    HapticFeedback.selectionClick();
+    saveTasks();
+  }
+
   return ListView(
     padding: const EdgeInsets.all(16),
     children: [
-    Column(
-            children: [
-              Text(
-                dayName(selectedDate),
-                style: const TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                fullDate(selectedDate),
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey.shade600,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    onPressed: goToPreviousDay,
-                    icon: const Icon(Icons.chevron_left),
-                  ),
-                  PopupMenuButton<CalendarView>(
-                    initialValue: currentView,
-                    onSelected: (view) {
-                      setState(() {
-                        currentView = view;
-                      });
-                    },
-                    child: Text(
-                      currentView == CalendarView.day
-                        ? "Day View"
-                        : currentView == CalendarView.week
-                          ? "Week View"
-                          : currentView == CalendarView.month
-                            ? "Month View"
-                            : "Year View"
-                    ),
-                    itemBuilder: (context) => const [
-                      PopupMenuItem(
-                        value: CalendarView.day,
-                        child: Text("Day View"),
-                      ),
-                      PopupMenuItem(
-                        value: CalendarView.week,
-                        child: Text("Week View"),
-                      ),
-                      PopupMenuItem(
-                        value: CalendarView.month,
-                        child: Text("Month View"),
-                      ),
-                      PopupMenuItem(
-                        value: CalendarView.year,
-                        child: Text("Year View"),
-                      ),
-                  ],
-                ),
-                  IconButton(
-                    onPressed: goToNextDay,
-                    icon: const Icon(Icons.chevron_right),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            "Today's Focus",
-            style: TextStyle(
-              fontSize: 22,
+      Column(
+        children: [
+          Text(
+            dayName(selectedDate),
+            style: const TextStyle(
+              fontSize: 28,
               fontWeight: FontWeight.bold,
+              color: Color(0xFF454B54),
             ),
           ),
-          const SizedBox(height: 10),
-          if (activeTasks.isEmpty)
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: Text("Nothing scheduled. Enjoy your day."),
+          const SizedBox(height: 4),
+          Text(
+            fullDate(selectedDate),
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.grey.shade600,
             ),
-          for (final task in activeTasks)
-  Dismissible(
-    key: ValueKey(task.id),
-
-    background: Container(
-      alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.only(left: 20),
-      decoration: BoxDecoration(
-        color: Colors.green.shade300,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: const Icon(
-        Icons.check_circle,
-        color: Colors.white,
-      ),
-    ),
-
-    secondaryBackground: Container(
-      alignment: Alignment.centerRight,
-      padding: const EdgeInsets.only(right: 20),
-      decoration: BoxDecoration(
-        color: Colors.red.shade300,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: const Icon(
-        Icons.delete,
-        color: Colors.white,
-      ),
-    ),
-
-    confirmDismiss: (direction) async {
-  lastChangedTask = task;
-  previousStatus = task.status;
-  previousDate = task.date;
-
-  if (direction == DismissDirection.startToEnd) {
-    setState(() {
-      task.status = TaskStatus.done;
-    });
-
-    saveTasks();
-    showUndoSnackBar("${task.title} completed");
-  }
-
-  if (direction == DismissDirection.endToStart) {
-    setState(() {
-      task.status = TaskStatus.trash;
-    });
-
-    saveTasks();
-    showUndoSnackBar("${task.title} moved to Trash");
-  }
-
-  return false;
-},
-
-    child: TaskCard(
-      title: task.title,
-      icon: Icons.circle_outlined,
-      isCompleting: completingTaskIds.contains(task.id),
-      onTap: () => showTaskActions(task),
-    ),
-  ),
-          if (completedTasks.isNotEmpty) ...[
-            const SizedBox(height: 24),
-            const Text(
-              "Done Today",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                onPressed: goToPreviousDay,
+                icon: const Icon(Icons.chevron_left),
               ),
-            ),
-            const SizedBox(height: 10),
-            for (final task in completedTasks)
-              TaskCard(
-                title: task.title,
-                icon: Icons.check_circle,
-                isCompleted: true,
-                onTap: () => showTaskActions(task),
+              const SizedBox(width: 48),
+              IconButton(
+                onPressed: goToNextDay,
+                icon: const Icon(Icons.chevron_right),
               ),
             ],
-        ]
-        );
-    } 
+          ),
+        ],
+      ),
+
+      const SizedBox(height: 20),
+
+      const Text(
+        "ToDos ToDay",
+        style: TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+
+      const SizedBox(height: 10),
+
+      if (activeTasks.isEmpty)
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: Text("Nothing ToDo. Enjoy ToDay."),
+        ),
+
+      if (activeTasks.isNotEmpty)
+        ReorderableListView(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          buildDefaultDragHandles: true,
+          onReorder: reorderActiveTasks,
+          proxyDecorator: (child, index, animation) {
+            return Material(
+              color: Colors.transparent,
+              elevation: 6,
+              borderRadius: BorderRadius.circular(22),
+              child: child,
+            );
+          },
+          children: [
+            for (final task in activeTasks)
+              Dismissible(
+                key: ValueKey(task.id),
+                background: Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.only(left: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade300,
+                    borderRadius: BorderRadius.circular(22),
+                  ),
+                  child: const Icon(
+                    Icons.check_circle,
+                    color: Colors.white,
+                  ),
+                ),
+                secondaryBackground: Container(
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.only(right: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade300,
+                    borderRadius: BorderRadius.circular(22),
+                  ),
+                  child: const Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
+                ),
+                confirmDismiss: (direction) async {
+                  lastChangedTask = task;
+                  previousStatus = task.status;
+                  previousDate = task.date;
+
+                  if (direction == DismissDirection.startToEnd) {
+                    HapticFeedback.mediumImpact();
+
+                    setState(() {
+                      task.status = TaskStatus.done;
+                    });
+
+                    saveTasks();
+                    showUndoSnackBar("${task.title} completed");
+                  }
+
+                  if (direction == DismissDirection.endToStart) {
+                    HapticFeedback.heavyImpact();
+
+                    setState(() {
+                      task.status = TaskStatus.trash;
+                    });
+
+                    saveTasks();
+                    showUndoSnackBar("${task.title} moved to Trash");
+                  }
+
+                  return false;
+                },
+                child: TaskCard(
+                  title: task.title,
+                  icon: Icons.circle_outlined,
+                  isCompleting: completingTaskIds.contains(task.id),
+                  onTap: () => showTaskActions(task),
+                ),
+              ),
+          ],
+        ),
+
+      if (completedTasks.isNotEmpty) ...[
+        const SizedBox(height: 24),
+        const Text(
+          "Done Today",
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 10),
+        for (final task in completedTasks)
+          TaskCard(
+            title: task.title,
+            icon: Icons.check_circle,
+            isCompleted: true,
+            onTap: () => showTaskActions(task),
+          ),
+      ],
+    ],
+  );
+}
   Widget buildWeekView() {
   final startOfWeek =
-      selectedDate.subtract(Duration(days: selectedDate.weekday - 1));
+      selectedDate.subtract(Duration(days: selectedDate.weekday % 7));
+
+  final endOfWeek = startOfWeek.add(const Duration(days: 6));
 
   final weekDays = List.generate(
     7,
     (index) => startOfWeek.add(Duration(days: index)),
   );
-  return ListView.builder(
+
+  return ListView(
     padding: const EdgeInsets.all(16),
-    itemCount: weekDays.length,
-    itemBuilder: (context, index) {
-      final day = weekDays[index];
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.chevron_left),
+            onPressed: () {
+              HapticFeedback.selectionClick();
 
-      final taskCount = tasks.where((task) {
-        return task.status == TaskStatus.active &&
-            isSameDay(task.date, day);
-      }).length;
-
-      return Card(
-        child: ListTile(
-          title: Text(
-            DateFormat('EEEE').format(day),
+              setState(() {
+                selectedDate =
+                    selectedDate.subtract(const Duration(days: 7));
+              });
+            },
           ),
-          subtitle: Text(
-            DateFormat('MMMM d').format(day),
-          ),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: List.generate(
-              taskCount,
-              (_) => const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 1),
-                child: Icon(
-                  Icons.circle,
-                  size: 8,
-                ),
+          Expanded(
+            child: Text(
+              "${DateFormat('MMM d').format(startOfWeek)} - "
+              "${DateFormat('MMM d').format(endOfWeek)}",
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          onTap: () {
-            setState(() {
-              selectedDate = day;
-              currentView = CalendarView.day;
-            });
-          },
+          IconButton(
+            icon: const Icon(Icons.chevron_right),
+            onPressed: () {
+              HapticFeedback.selectionClick();
+
+              setState(() {
+                selectedDate = selectedDate.add(const Duration(days: 7));
+              });
+            },
+          ),
+        ],
+      ),
+
+      const SizedBox(height: 20),
+
+      for (final day in weekDays)
+        Card(
+          child: ListTile(
+            title: Text(DateFormat('EEEE').format(day)),
+            subtitle: Text(DateFormat('MMMM d').format(day)),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: List.generate(
+                tasks.where((task) {
+                  return task.status == TaskStatus.active &&
+                      isSameDay(task.date, day);
+                }).length,
+                (_) => const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 1),
+                  child: Icon(
+                    Icons.circle,
+                    size: 8,
+                  ),
+                ),
+              ),
+            ),
+            onTap: () {
+              HapticFeedback.selectionClick();
+
+              setState(() {
+                selectedDate = day;
+                currentView = CalendarView.day;
+              });
+            },
+          ),
         ),
-      );
-    },
+    ],
   );
 }
 Widget buildMonthView() {
@@ -615,18 +788,54 @@ Widget buildMonthView() {
       (index) => DateTime(selectedDate.year, selectedDate.month, index + 1),
     ),
   ];
-
+  
   return ListView(
     padding: const EdgeInsets.all(16),
     children: [
-      Text(
-        DateFormat('MMMM yyyy').format(selectedDate),
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 26,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
+      Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    IconButton(
+      icon: const Icon(Icons.chevron_left),
+      onPressed: () {
+        HapticFeedback.selectionClick();
+
+        setState(() {
+          selectedDate = DateTime(
+            selectedDate.year,
+            selectedDate.month - 1,
+            1,
+          );
+        });
+      },
+    ),
+    Expanded(
+  child: Text(
+    DateFormat('MMMM yyyy').format(selectedDate),
+    textAlign: TextAlign.center,
+    overflow: TextOverflow.ellipsis,
+    style: const TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+),
+    IconButton(
+      icon: const Icon(Icons.chevron_right),
+      onPressed: () {
+        HapticFeedback.selectionClick();
+
+        setState(() {
+          selectedDate = DateTime(
+            selectedDate.year,
+            selectedDate.month + 1,
+            1,
+          );
+        });
+      },
+    ),
+  ],
+),
       const SizedBox(height: 20),
 
       const Row(
@@ -683,6 +892,7 @@ Widget buildMonthView() {
           return InkWell(
             borderRadius: BorderRadius.circular(12),
             onTap: () {
+              HapticFeedback.selectionClick();
               setState(() {
                 selectedDate = day;
                 currentView = CalendarView.day;
@@ -723,7 +933,26 @@ Widget buildYearView() {
   return ListView(
     padding: const EdgeInsets.all(16),
     children: [
-      Text(
+      Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    IconButton(
+      icon: const Icon(Icons.chevron_left),
+      onPressed: () {
+        HapticFeedback.selectionClick();
+
+        setState(() {
+          selectedDate = DateTime(
+            selectedDate.year - 1,
+            selectedDate.month,
+            selectedDate.day,
+          );
+        });
+      },
+    ),
+
+    Expanded(
+      child: Text(
         "${selectedDate.year}",
         textAlign: TextAlign.center,
         style: const TextStyle(
@@ -731,6 +960,24 @@ Widget buildYearView() {
           fontWeight: FontWeight.bold,
         ),
       ),
+    ),
+
+    IconButton(
+      icon: const Icon(Icons.chevron_right),
+      onPressed: () {
+        HapticFeedback.selectionClick();
+
+        setState(() {
+          selectedDate = DateTime(
+            selectedDate.year + 1,
+            selectedDate.month,
+            selectedDate.day,
+          );
+        });
+      },
+    ),
+  ],
+),
 
       const SizedBox(height: 20),
 
@@ -751,6 +998,7 @@ Widget buildYearView() {
           return InkWell(
             borderRadius: BorderRadius.circular(12),
             onTap: () {
+              HapticFeedback.selectionClick();
               setState(() {
                 selectedDate = month;
                 currentView = CalendarView.month;
@@ -791,16 +1039,29 @@ Widget buildYearView() {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("ToDo ToDay"),
-        centerTitle: true,
-      ),
-      body: currentView == CalendarView.day
+  title: const Text("ToDo ToDay"),
+  centerTitle: true,
+  actions: [
+    TextButton(
+      onPressed: goToToday,
+      child: const Text("Today"),
+    ),
+  ],
+),
+      body: Column(
+  children: [
+    buildViewSelector(),
+    Expanded(
+      child: currentView == CalendarView.day
           ? buildDayView()
           : currentView == CalendarView.week
               ? buildWeekView()
               : currentView == CalendarView.month
                   ? buildMonthView()
                   : buildYearView(),
+    ),
+  ],
+),
           
       floatingActionButton: FloatingActionButton(
         onPressed: showAddTaskDialog,
