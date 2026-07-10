@@ -40,9 +40,10 @@ int sortOrder;
       date: DateTime.parse(map['date']),
       status: TaskStatus.values.firstWhere(
         (status) => status.name == map['status'],
+      
       ),
-      sortOrder: map['sortOrder'] ?? 0,
       createdAt: DateTime.parse(map['createdAt']),
+      sortOrder: (map['sortOrder'] as num?)?.toInt() ?? 0,
     );
   }
 }

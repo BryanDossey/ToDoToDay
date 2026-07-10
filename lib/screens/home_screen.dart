@@ -79,9 +79,9 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void saveTasks() {
-    widget.taskService.saveTasks(tasks);
-  }
+  Future<void> saveTasks() async {
+  await widget.taskService.saveTasks(tasks);
+}
 
 void showUndoSnackBar(String message) {
   ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -484,7 +484,7 @@ Widget buildViewSelector() {
         isSameDay(task.date, selectedDate);
   }).toList();
 
- void reorderActiveTasks(int oldIndex, int newIndex) {
+ Future<void> reorderActiveTasks(int oldIndex, int newIndex) async {
   if (newIndex > oldIndex) {
     newIndex -= 1;
   }
@@ -499,34 +499,9 @@ Widget buildViewSelector() {
   });
 
   HapticFeedback.selectionClick();
-  saveTasks();
+  await saveTasks();
 }
 
-    final reorderedActiveTasks = List<Task>.from(activeTasks);
-    final movedTask = reorderedActiveTasks.removeAt(oldIndex);
-    reorderedActiveTasks.insert(newIndex, movedTask);
-
-    var activeTaskIndex = 0;
-
-    setState(() {
-      tasks = tasks.map((task) {
-        final belongsToSelectedDay =
-            task.status == TaskStatus.active &&
-            isSameDay(task.date, selectedDate);
-
-        if (belongsToSelectedDay) {
-          final reorderedTask = reorderedActiveTasks[activeTaskIndex];
-          activeTaskIndex += 1;
-          return reorderedTask;
-        }
-
-        return task;
-      }).toList();
-    });
-
-    HapticFeedback.selectionClick();
-    saveTasks();
-  }
 
   return ListView(
     padding: const EdgeInsets.all(16),
