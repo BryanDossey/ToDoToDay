@@ -34,6 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
   TaskStatus? previousStatus;
   DateTime? previousDate;
   
+bool showCompletedTasks = true;
+
   @override
   void initState() {
     super.initState();
@@ -642,26 +644,57 @@ Widget buildViewSelector() {
         ),
 
       if (completedTasks.isNotEmpty) ...[
-        const SizedBox(height: 24),
-        const Text(
-          "Done Today",
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
+  const SizedBox(height: 24),
+
+  InkWell(
+    borderRadius: BorderRadius.circular(12),
+    onTap: () {
+      HapticFeedback.selectionClick();
+
+      setState(() {
+        showCompletedTasks = !showCompletedTasks;
+      });
+    },
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              "Done Today (${completedTasks.length})",
+              style: TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.bold,
+  color: Color(0xFF5A5F66),
+),
+            ),
           ),
-        ),
-        const SizedBox(height: 10),
-        for (final task in completedTasks)
-          TaskCard(
-            title: task.title,
-            icon: Icons.check_circle,
-            isCompleted: true,
-            onTap: () => showTaskActions(task),
+          Icon(
+            showCompletedTasks
+                ? Icons.keyboard_arrow_down
+                : Icons.chevron_right,
           ),
-      ],
-    ],
-  );
+        ],
+      ),
+    ),
+  ),
+
+  if (showCompletedTasks) ...[
+    const SizedBox(height: 10),
+
+    for (final task in completedTasks)
+      TaskCard(
+        title: task.title,
+        icon: Icons.check_circle,
+        isCompleted: true,
+        onTap: () => showTaskActions(task),
+      ),
+  ],
+],
+],
+);
 }
+
   Widget buildWeekView() {
   final startOfWeek =
       selectedDate.subtract(Duration(days: selectedDate.weekday % 7));
@@ -717,8 +750,10 @@ Widget buildViewSelector() {
       const SizedBox(height: 20),
 
       for (final day in weekDays)
-        Card(
-          child: ListTile(
+  Padding(
+    padding: const EdgeInsets.symmetric(vertical: 3),
+    child: Card(
+      child: ListTile(
             title: Text(DateFormat('EEEE').format(day)),
             subtitle: Text(DateFormat('MMMM d').format(day)),
             trailing: Row(
@@ -747,6 +782,7 @@ Widget buildViewSelector() {
             },
           ),
         ),
+  ),
     ],
   );
 }
@@ -969,6 +1005,9 @@ Widget buildYearView() {
         ),
         itemBuilder: (context, index) {
           final month = months[index];
+          final isSelectedMonth =
+            month.year == selectedDate.year &&
+            month.month == selectedDate.month;
 
           return InkWell(
             borderRadius: BorderRadius.circular(12),
@@ -981,9 +1020,15 @@ Widget buildYearView() {
             },
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
+  color: Colors.blue.withOpacity(0.1),
+  borderRadius: BorderRadius.circular(12),
+  border: isSelectedMonth
+      ? Border.all(
+          color: const Color(0xFF355A8A),
+          width: 2.5,
+        )
+      : null,
+),
               child: Center(
                 child: Text(
                   DateFormat('MMM').format(month),
@@ -1038,10 +1083,12 @@ Widget buildYearView() {
   ],
 ),
           
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: currentView == CalendarView.day
+    ? FloatingActionButton(
         onPressed: showAddTaskDialog,
         child: const Icon(Icons.add),
-      ),
+      )
+    : null,
     );
   }
 }
