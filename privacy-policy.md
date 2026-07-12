@@ -23,4 +23,4 @@ If future versions of ToDo ToDay introduce cloud synchronization or additional s
 Contact:
 
 Bryan Dossey  
-tanth12@gmail.com
+bryan@productionartservices.com
