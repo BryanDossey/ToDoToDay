@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 352.3 410.6">
+  <!-- Generator: Adobe Illustrator 30.5.1, SVG Export Plug-In . SVG Version: 2.1.4 Build 3)  -->
+  <defs>
+    <style>
+      .st0 {
+        mask: url(#mask);
+      }
+
+      .st1 {
+        filter: url(#luminosity-invert);
+      }
+
+      .st2 {
+        filter: url(#luminosity-invert11);
+      }
+
+      .st3 {
+        filter: url(#luminosity-invert10);
+      }
+
+      .st4 {
+        opacity: .2;
+      }
+
+      .st4, .st5 {
+        mix-blend-mode: multiply;
+      }
+
+      .st5 {
+        opacity: .5;
+      }
+
+      .st6, .st7 {
+        fill: #231f20;
+      }
+
+      .st8 {
+        filter: url(#luminosity-invert1);
+      }
+
+      .st9 {
+        filter: url(#luminosity-invert5);
+      }
+
+      .st10 {
+        filter: url(#luminosity-invert4);
+      }
+
+      .st11 {
+        filter: url(#luminosity-invert3);
+      }
+
+      .st12 {
+        filter: url(#luminosity-invert7);
+      }
+
+      .st13 {
+        filter: url(#luminosity-invert2);
+      }
+
+      .st14 {
+        filter: url(#luminosity-invert8);
+      }
+
+      .st15 {
+        filter: url(#luminosity-invert6);
+      }
+
+      .st16 {
+        filter: url(#luminosity-invert9);
+      }
+
+      .st17 {
+        isolation: isolate;
+      }
+
+      .st18 {
+        mask: url(#mask-2);
+      }
+
+      .st19 {
+        mask: url(#mask-3);
+      }
+
+      .st20 {
+        mask: url(#mask-4);
+      }
+
+      .st21 {
+        mask: url(#mask-5);
+      }
+
+      .st22 {
+        mask: url(#mask-7);
+      }
+
+      .st23 {
+        mask: url(#mask-6);
+      }
+
+      .st24 {
+        mask: url(#mask-1);
+      }
+
+      .st25 {
+        mask: url(#mask-9);
+      }
+
+      .st26 {
+        mask: url(#mask-8);
+      }
+
+      .st27 {
+        fill: #f2e4d2;
+      }
+
+      .st28 {
+        fill: #91ad7d;
+      }
+
+      .st29 {
+        stroke: #4e614b;
+      }
+
+      .st29, .st30, .st31 {
+        fill: none;
+      }
+
+      .st29, .st30, .st31, .st7 {
+        stroke-miterlimit: 10;
+        stroke-width: 2px;
+      }
+
+      .st30 {
+        stroke: #f7e1a9;
+      }
+
+      .st31, .st7 {
+        stroke: #231f20;
+      }
+
+      .st32 {
+        fill: #4e614b;
+      }
+
+      .st33 {
+        mask: url(#mask-10);
+      }
+
+      .st34 {
+        mask: url(#mask-11);
+      }
+
+      .st35 {
+        fill: #f7e1a9;
+      }
+    </style>
+    <filter id="luminosity-invert" x="147.6" y="83.3" width="146.4" height="25.9" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feColorMatrix result="cm" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/>
+    </filter>
+    <mask id="mask" x="147.6" y="83.3" width="146.4" height="25.9" maskUnits="userSpaceOnUse">
+      <g class="st1">
+        <image width="610" height="108" transform="translate(147.6 83.3) scale(.2)" xlink:href="Check-1.png"/>
+      </g>
+    </mask>
+    <filter id="luminosity-invert1" x="147.6" y="39.4" width="205.7" height="26.2" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feColorMatrix result="cm" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/>
+    </filter>
+    <mask id="mask-1" x="147.6" y="39.4" width="205.7" height="26.2" maskUnits="userSpaceOnUse">
+      <g class="st8">
+        <image width="857" height="109" transform="translate(147.6 39.4) scale(.2)" xlink:href="Check-2.png"/>
+      </g>
+    </mask>
+    <filter id="luminosity-invert2" x="147.6" y="221.8" width="146.4" height="25.9" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feColorMatrix result="cm" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/>
+    </filter>
+    <mask id="mask-2" x="147.6" y="221.8" width="146.4" height="25.9" maskUnits="userSpaceOnUse">
+      <g class="st13">
+        <image width="610" height="108" transform="translate(147.6 221.8) scale(.2)" xlink:href="Check-3.png"/>
+      </g>
+    </mask>
+    <filter id="luminosity-invert3" x="147.6" y="177.9" width="205.7" height="26.2" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feColorMatrix result="cm" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/>
+    </filter>
+    <mask id="mask-3" x="147.6" y="177.9" width="205.7" height="26.2" maskUnits="userSpaceOnUse">
+      <g class="st11">
+        <image width="857" height="109" transform="translate(147.6 177.9) scale(.2)" xlink:href="Check-4.png"/>
+      </g>
+    </mask>
+    <filter id="luminosity-invert4" x="147.6" y="361" width="146.4" height="26.2" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feColorMatrix result="cm" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/>
+    </filter>
+    <mask id="mask-4" x="147.6" y="361" width="146.4" height="26.2" maskUnits="userSpaceOnUse">
+      <g class="st10">
+        <image width="610" height="109" transform="translate(147.6 361) scale(.2)" xlink:href="Check-5.png"/>
+      </g>
+    </mask>
+    <filter id="luminosity-invert5" x="147.6" y="317.3" width="205.7" height="25.9" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feColorMatrix result="cm" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/>
+    </filter>
+    <mask id="mask-5" x="147.6" y="317.3" width="205.7" height="25.9" maskUnits="userSpaceOnUse">
+      <g class="st9">
+        <image width="857" height="108" transform="translate(147.6 317.3) scale(.2)" xlink:href="Check-6.png"/>
+      </g>
+    </mask>
+    <filter id="luminosity-invert6" x="-1.2" y="293.6" width="118.3" height="118.1" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feColorMatrix result="cm" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/>
+    </filter>
+    <mask id="mask-6" x="-1.2" y="293.6" width="118.3" height="118.1" maskUnits="userSpaceOnUse">
+      <g class="st15">
+        <image width="493" height="492" transform="translate(-1.2 293.6) scale(.2)" xlink:href="Check-7.png"/>
+      </g>
+    </mask>
+    <filter id="luminosity-invert7" x="-1.2" y="153.8" width="118.3" height="118.1" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feColorMatrix result="cm" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/>
+    </filter>
+    <mask id="mask-7" x="-1.2" y="153.8" width="118.3" height="118.1" maskUnits="userSpaceOnUse">
+      <g class="st12">
+        <image width="493" height="492" transform="translate(-1.2 153.8) scale(.2)" xlink:href="Check-8.png"/>
+      </g>
+    </mask>
+    <filter id="luminosity-invert8" x="20.4" y="-2.1" width="125.5" height="110.9" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feColorMatrix result="cm" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/>
+    </filter>
+    <mask id="mask-8" x="20.4" y="-2.1" width="125.5" height="110.9" maskUnits="userSpaceOnUse">
+      <g class="st14">
+        <image width="523" height="462" transform="translate(20.4 -2.1) scale(.2)" xlink:href="Check-9.png"/>
+      </g>
+    </mask>
+    <filter id="luminosity-invert9" x="21.6" y="-1.1" width="123.4" height="109" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feColorMatrix result="cm" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/>
+    </filter>
+    <mask id="mask-9" x="21.6" y="-1.1" width="123.4" height="109" maskUnits="userSpaceOnUse">
+      <g class="st16">
+        <image width="514" height="454" transform="translate(21.6 -1.1) scale(.2)" xlink:href="Check-10.png"/>
+      </g>
+    </mask>
+    <filter id="luminosity-invert10" x="-2.1" y="14.2" width="120.2" height="120.2" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feColorMatrix result="cm" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/>
+    </filter>
+    <mask id="mask-10" x="-2.1" y="14.2" width="120.2" height="120.2" maskUnits="userSpaceOnUse">
+      <g class="st3">
+        <image width="501" height="501" transform="translate(-2.1 14.2) scale(.2)" xlink:href="Check-11.png"/>
+      </g>
+    </mask>
+    <filter id="luminosity-invert11" x="-1.2" y="15.2" width="118.3" height="118.3" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feColorMatrix result="cm" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/>
+    </filter>
+    <mask id="mask-11" x="-1.2" y="15.2" width="118.3" height="118.3" maskUnits="userSpaceOnUse">
+      <g class="st2">
+        <image width="493" height="493" transform="translate(-1.2 15.2) scale(.2)" xlink:href="Check-12.png"/>
+      </g>
+    </mask>
+  </defs>
+  <g class="st17">
+    <g id="Layer_2">
+      <rect class="st7" x="149.6" y="85.4" width="142.2" height="21.8" rx="10.9" ry="10.9"/>
+      <rect class="st7" x="149.6" y="41.6" width="201.7" height="21.8" rx="10.9" ry="10.9"/>
+      <rect class="st7" x="149.6" y="223.8" width="142.2" height="21.8" rx="10.9" ry="10.9"/>
+      <rect class="st7" x="149.6" y="180.1" width="201.7" height="21.8" rx="10.9" ry="10.9"/>
+      <rect class="st7" x="149.6" y="363.2" width="142.2" height="21.8" rx="10.9" ry="10.9"/>
+      <rect class="st7" x="149.6" y="319.4" width="201.7" height="21.8" rx="10.9" ry="10.9"/>
+      <g>
+        <rect class="st27" x="149.6" y="85.4" width="142.2" height="21.8" rx="10.9" ry="10.9"/>
+        <g class="st0">
+          <g class="st5">
+            <rect class="st35" x="149.6" y="85.4" width="142.2" height="21.8" rx="10.9" ry="10.9"/>
+          </g>
+        </g>
+      </g>
+      <g>
+        <rect class="st27" x="149.6" y="41.6" width="201.7" height="21.8" rx="10.9" ry="10.9"/>
+        <g class="st24">
+          <g class="st5">
+            <rect class="st35" x="149.6" y="41.6" width="201.7" height="21.8" rx="10.9" ry="10.9"/>
+          </g>
+        </g>
+      </g>
+      <g>
+        <rect class="st27" x="149.6" y="223.8" width="142.2" height="21.8" rx="10.9" ry="10.9"/>
+        <g class="st18">
+          <g class="st5">
+            <rect class="st35" x="149.6" y="223.8" width="142.2" height="21.8" rx="10.9" ry="10.9"/>
+          </g>
+        </g>
+      </g>
+      <g>
+        <rect class="st27" x="149.6" y="180.1" width="201.7" height="21.8" rx="10.9" ry="10.9"/>
+        <g class="st19">
+          <g class="st5">
+            <rect class="st35" x="149.6" y="180.1" width="201.7" height="21.8" rx="10.9" ry="10.9"/>
+          </g>
+        </g>
+      </g>
+      <g>
+        <rect class="st27" x="149.6" y="363.2" width="142.2" height="21.8" rx="10.9" ry="10.9"/>
+        <g class="st20">
+          <g class="st5">
+            <rect class="st35" x="149.6" y="363.2" width="142.2" height="21.8" rx="10.9" ry="10.9"/>
+          </g>
+        </g>
+      </g>
+      <g>
+        <rect class="st27" x="149.6" y="319.4" width="201.7" height="21.8" rx="10.9" ry="10.9"/>
+        <g class="st21">
+          <g class="st5">
+            <rect class="st35" x="149.6" y="319.4" width="201.7" height="21.8" rx="10.9" ry="10.9"/>
+          </g>
+        </g>
+      </g>
+      <path class="st7" d="M83.6,295.6h-51c-17.4,0-31.5,14.1-31.5,31.5v50.9c0,17.4,14.1,31.5,31.5,31.5h51c17.4,0,31.5-14.1,31.5-31.5v-50.9c0-17.4-14.1-31.5-31.5-31.5ZM100.4,377.9c0,9.5-7.7,17.2-17.2,17.2h-50.3c-9.5,0-17.2-7.7-17.2-17.2v-50.2c0-9.5,7.7-17.2,17.2-17.2h50.3c9.5,0,17.2,7.7,17.2,17.2v50.2Z"/>
+      <g>
+        <path class="st27" d="M83.6,295.6h-51c-17.4,0-31.5,14.1-31.5,31.5v50.9c0,17.4,14.1,31.5,31.5,31.5h51c17.4,0,31.5-14.1,31.5-31.5v-50.9c0-17.4-14.1-31.5-31.5-31.5ZM100.4,377.9c0,9.5-7.7,17.2-17.2,17.2h-50.3c-9.5,0-17.2-7.7-17.2-17.2v-50.2c0-9.5,7.7-17.2,17.2-17.2h50.3c9.5,0,17.2,7.7,17.2,17.2v50.2Z"/>
+        <g class="st23">
+          <g class="st5">
+            <path class="st35" d="M83.6,295.6h-51c-17.4,0-31.5,14.1-31.5,31.5v50.9c0,17.4,14.1,31.5,31.5,31.5h51c17.4,0,31.5-14.1,31.5-31.5v-50.9c0-17.4-14.1-31.5-31.5-31.5ZM100.4,377.9c0,9.5-7.7,17.2-17.2,17.2h-50.3c-9.5,0-17.2-7.7-17.2-17.2v-50.2c0-9.5,7.7-17.2,17.2-17.2h50.3c9.5,0,17.2,7.7,17.2,17.2v50.2Z"/>
+          </g>
+        </g>
+      </g>
+      <path class="st7" d="M83.6,155.8h-51c-17.4,0-31.5,14.1-31.5,31.5v50.9c0,17.4,14.1,31.5,31.5,31.5h51c17.4,0,31.5-14.1,31.5-31.5v-50.9c0-17.4-14.1-31.5-31.5-31.5ZM100.4,238.1c0,9.5-7.7,17.2-17.2,17.2h-50.3c-9.5,0-17.2-7.7-17.2-17.2v-50.2c0-9.5,7.7-17.2,17.2-17.2h50.3c9.5,0,17.2,7.7,17.2,17.2v50.2Z"/>
+      <g>
+        <path class="st27" d="M83.6,155.8h-51c-17.4,0-31.5,14.1-31.5,31.5v50.9c0,17.4,14.1,31.5,31.5,31.5h51c17.4,0,31.5-14.1,31.5-31.5v-50.9c0-17.4-14.1-31.5-31.5-31.5ZM100.4,238.1c0,9.5-7.7,17.2-17.2,17.2h-50.3c-9.5,0-17.2-7.7-17.2-17.2v-50.2c0-9.5,7.7-17.2,17.2-17.2h50.3c9.5,0,17.2,7.7,17.2,17.2v50.2Z"/>
+        <g class="st22">
+          <g class="st5">
+            <path class="st35" d="M83.6,155.8h-51c-17.4,0-31.5,14.1-31.5,31.5v50.9c0,17.4,14.1,31.5,31.5,31.5h51c17.4,0,31.5-14.1,31.5-31.5v-50.9c0-17.4-14.1-31.5-31.5-31.5ZM100.4,238.1c0,9.5-7.7,17.2-17.2,17.2h-50.3c-9.5,0-17.2-7.7-17.2-17.2v-50.2c0-9.5,7.7-17.2,17.2-17.2h50.3c9.5,0,17.2,7.7,17.2,17.2v50.2Z"/>
+          </g>
+        </g>
+      </g>
+      <g>
+        <g>
+          <path class="st6" d="M138.7,5.5l-1.5-1.3C132-.4,124.1,0,119.4,5.2l-60,66.6-13.4-15c-4.5-5-12.2-5.5-17.2-1l-1,.9c-5,4.5-5.5,12.2-1,17.2l22.7,25.9,2.6,2.7c4.5,4.6,11.5,4.2,16.4-.1l1-.9c.9-.8,70.2-78.1,70.2-78.1,4.7-5.2,4.2-13.1-.9-17.8Z"/>
+          <path class="st31" d="M138.7,5.5l-1.5-1.3C132-.4,124.1,0,119.4,5.2l-60,66.6-13.4-15c-4.5-5-12.2-5.5-17.2-1l-1,.9c-5,4.5-5.5,12.2-1,17.2l22.7,25.9,2.6,2.7c4.5,4.6,11.5,4.2,16.4-.1l1-.9c.9-.8,70.2-78.1,70.2-78.1,4.7-5.2,4.2-13.1-.9-17.8Z"/>
+        </g>
+        <g class="st26">
+          <g class="st4">
+            <path class="st32" d="M138.7,5.5l-1.5-1.3C132-.4,124.1,0,119.4,5.2l-60,66.6-13.4-15c-4.5-5-12.2-5.5-17.2-1l-1,.9c-5,4.5-5.5,12.2-1,17.2l22.7,25.9,2.6,2.7c4.5,4.6,11.5,4.2,16.4-.1l1-.9c.9-.8,70.2-78.1,70.2-78.1,4.7-5.2,4.2-13.1-.9-17.8Z"/>
+            <path class="st29" d="M138.7,5.5l-1.5-1.3C132-.4,124.1,0,119.4,5.2l-60,66.6-13.4-15c-4.5-5-12.2-5.5-17.2-1l-1,.9c-5,4.5-5.5,12.2-1,17.2l22.7,25.9,2.6,2.7c4.5,4.6,11.5,4.2,16.4-.1l1-.9c.9-.8,70.2-78.1,70.2-78.1,4.7-5.2,4.2-13.1-.9-17.8Z"/>
+          </g>
+        </g>
+      </g>
+      <g>
+        <path class="st28" d="M138.7,5.5l-1.5-1.3C132-.4,124.1,0,119.4,5.2l-60,66.6-13.4-15c-4.5-5-12.2-5.5-17.2-1l-1,.9c-5,4.5-5.5,12.2-1,17.2l22.7,25.9,2.6,2.7c4.5,4.6,11.5,4.2,16.4-.1l1-.9c.9-.8,70.2-78.1,70.2-78.1,4.7-5.2,4.2-13.1-.9-17.8Z"/>
+        <g class="st25">
+          <g class="st4">
+            <path class="st32" d="M138.7,5.5l-1.5-1.3C132-.4,124.1,0,119.4,5.2l-60,66.6-13.4-15c-4.5-5-12.2-5.5-17.2-1l-1,.9c-5,4.5-5.5,12.2-1,17.2l22.7,25.9,2.6,2.7c4.5,4.6,11.5,4.2,16.4-.1l1-.9c.9-.8,70.2-78.1,70.2-78.1,4.7-5.2,4.2-13.1-.9-17.8Z"/>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g id="Layer_3">
+      <path class="st7" d="M71.9,39.3"/>
+      <g>
+        <g>
+          <path class="st6" d="M100.4,77.9v21.7c0,9.5-7.7,17.2-17.2,17.2h-50.3c-9.5,0-17.2-7.7-17.2-17.2v-50.2c0-9.5,7.7-17.2,17.2-17.2h53.5l13.2-14.8h-10.1c0,0-57,0-57,0C15.1,17.4,1,31.5,1,49v50.9c0,17.4,14.1,31.5,31.5,31.5h51c17.4,0,31.5-14.1,31.5-31.5v-39.7l-14.7,17.7Z"/>
+          <path class="st31" d="M100.4,77.9v21.7c0,9.5-7.7,17.2-17.2,17.2h-50.3c-9.5,0-17.2-7.7-17.2-17.2v-50.2c0-9.5,7.7-17.2,17.2-17.2h53.5l13.2-14.8h-10.1c0,0-57,0-57,0C15.1,17.4,1,31.5,1,49v50.9c0,17.4,14.1,31.5,31.5,31.5h51c17.4,0,31.5-14.1,31.5-31.5v-39.7l-14.7,17.7Z"/>
+        </g>
+        <g class="st33">
+          <g class="st5">
+            <path class="st35" d="M100.4,77.9v21.7c0,9.5-7.7,17.2-17.2,17.2h-50.3c-9.5,0-17.2-7.7-17.2-17.2v-50.2c0-9.5,7.7-17.2,17.2-17.2h53.5l13.2-14.8h-10.1c0,0-57,0-57,0C15.1,17.4,1,31.5,1,49v50.9c0,17.4,14.1,31.5,31.5,31.5h51c17.4,0,31.5-14.1,31.5-31.5v-39.7l-14.7,17.7Z"/>
+            <path class="st30" d="M100.4,77.9v21.7c0,9.5-7.7,17.2-17.2,17.2h-50.3c-9.5,0-17.2-7.7-17.2-17.2v-50.2c0-9.5,7.7-17.2,17.2-17.2h53.5l13.2-14.8h-10.1c0,0-57,0-57,0C15.1,17.4,1,31.5,1,49v50.9c0,17.4,14.1,31.5,31.5,31.5h51c17.4,0,31.5-14.1,31.5-31.5v-39.7l-14.7,17.7Z"/>
+          </g>
+        </g>
+      </g>
+      <g>
+        <path class="st27" d="M100.4,77.9v21.7c0,9.5-7.7,17.2-17.2,17.2h-50.3c-9.5,0-17.2-7.7-17.2-17.2v-50.2c0-9.5,7.7-17.2,17.2-17.2h53.5l13.2-14.8h-10.1c0,0-57,0-57,0C15.1,17.4,1,31.5,1,49v50.9c0,17.4,14.1,31.5,31.5,31.5h51c17.4,0,31.5-14.1,31.5-31.5v-39.7l-14.7,17.7Z"/>
+        <g class="st34">
+          <g class="st5">
+            <path class="st35" d="M100.4,77.9v21.7c0,9.5-7.7,17.2-17.2,17.2h-50.3c-9.5,0-17.2-7.7-17.2-17.2v-50.2c0-9.5,7.7-17.2,17.2-17.2h53.5l13.2-14.8h-10.1c0,0-57,0-57,0C15.1,17.4,1,31.5,1,49v50.9c0,17.4,14.1,31.5,31.5,31.5h51c17.4,0,31.5-14.1,31.5-31.5v-39.7l-14.7,17.7Z"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
