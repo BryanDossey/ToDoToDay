@@ -232,8 +232,9 @@ Future<void> showToSoonOptions(Task task) async {
     previousDate = task.date;
 
     setState(() {
-      task.date = selectedDate.add(const Duration(days: 1));
-    });
+  task.date = task.date.add(const Duration(days: 1));
+  task.status = TaskStatus.active;
+});
 
     saveTasks();
     Navigator.pop(context);
@@ -250,8 +251,9 @@ Future<void> showToSoonOptions(Task task) async {
   previousDate = task.date;
 
   setState(() {
-    task.date = selectedDate.add(const Duration(days: 3));
-  });
+  task.date = selectedDate.add(const Duration(days: 3));
+  task.status = TaskStatus.active;
+});
 
   saveTasks();
   Navigator.pop(context);
@@ -268,8 +270,9 @@ Future<void> showToSoonOptions(Task task) async {
   previousDate = task.date;
 
   setState(() {
-    task.date = selectedDate.add(const Duration(days: 7));
-  });
+  task.date = selectedDate.add(const Duration(days: 7));
+  task.status = TaskStatus.active;
+});
 
   saveTasks();
   Navigator.pop(context);
@@ -298,6 +301,7 @@ previousDate = task.date;
 
 setState(() {
   task.date = pickedDate;
+  task.status = TaskStatus.active;
 });
 
 saveTasks();
@@ -307,6 +311,46 @@ showUndoSnackBar("${task.title} rescheduled");
             ),
           ],
         ),
+      );
+    },
+  );
+}
+void showEditTaskDialog(Task task) {
+  final controller = TextEditingController(text: task.title);
+
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text("Edit ToDo"),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          decoration: const InputDecoration(
+            hintText: "What do you need To Do?",
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final newTitle = controller.text.trim();
+
+              if (newTitle.isEmpty) return;
+
+              setState(() {
+                task.title = newTitle;
+              });
+
+              saveTasks();
+              Navigator.pop(context);
+            },
+            child: const Text("Save"),
+          ),
+        ],
       );
     },
   );
@@ -327,28 +371,51 @@ showUndoSnackBar("${task.title} rescheduled");
               ),
               const Divider(),
               ListTile(
-                leading: const Icon(Icons.check_circle),
-                title: const Text("To Done!"),
+                leading: const Icon(Icons.edit),
+                title: const Text("To Edit"),
                 onTap: () {
-                  lastChangedTask = task;
-                  previousStatus = task.status;
-                  previousDate = task.date;
+                  HapticFeedback.selectionClick();
 
-                  setState(() {
-                    HapticFeedback.mediumImpact();
-                  task.status = TaskStatus.done;
-              });
-
-                  saveTasks();
-
-                  showUndoSnackBar(
-                "${task.title} moved To Done",
-                );
-
-  saveTasks();
-  Navigator.pop(context);
-},
+                  Navigator.pop(context);
+                showEditTaskDialog(task);
+                },
               ),
+              if (task.status == TaskStatus.active)
+  ListTile(
+    leading: const Icon(Icons.check_circle),
+    title: const Text("To Done!"),
+    onTap: () {
+      lastChangedTask = task;
+      previousStatus = task.status;
+      previousDate = task.date;
+
+      HapticFeedback.mediumImpact();
+
+      setState(() {
+        task.status = TaskStatus.done;
+      });
+
+      saveTasks();
+      Navigator.pop(context);
+
+      showUndoSnackBar("${task.title} moved To Done");
+    },
+  )
+else if (task.status == TaskStatus.done)
+  ListTile(
+    leading: const Icon(Icons.undo),
+    title: const Text("Back ToDo"),
+    onTap: () {
+      HapticFeedback.lightImpact();
+
+      setState(() {
+        task.status = TaskStatus.active;
+      });
+
+      saveTasks();
+      Navigator.pop(context);
+    },
+  ),
               ListTile(
   leading: const Icon(Icons.arrow_forward),
   title: const Text("To-Morrow"),
@@ -360,8 +427,9 @@ showUndoSnackBar("${task.title} rescheduled");
     previousDate = task.date;
 
     setState(() {
-      task.date = task.date.add(const Duration(days: 1));
-    });
+  task.date = task.date.add(const Duration(days: 1));
+  task.status = TaskStatus.active;
+});
 
     saveTasks();
     Navigator.pop(context);
